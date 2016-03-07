@@ -1,3 +1,7 @@
+''' **** note will only run on the monash network or connected to monash via monash vpn
+grabs the data from the blackburn sensor. Soon to update to do wood sensor as well/
+'''
+
 from websocket import create_connection
 import json
 import datetime
@@ -28,9 +32,11 @@ for item in datalist:
         itemlist = item.split(',')
         itemlist[0] = datetime.datetime.fromtimestamp(int(itemlist[0])).strftime('%Y-%m-%d %H:%M:%S')
         t = int(itemlist[0][14:16])
-        if t%30 == 0:
+        lastt=0
+        if (t==30 or t==00) and lastt!=t:
             print t
             outfile.write(itemlist[0]+','+itemlist[3]+','+itemlist[4]+'\n')
+            lastt=t
 #outfile.write(result)
 outfile.close()
 
